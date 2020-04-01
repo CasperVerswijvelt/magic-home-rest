@@ -62,7 +62,7 @@ function hexToRgb(hex) {
     } : null;
 }
 
-app.post("/color", (req, res) => {
+app.post("/api/color", (req, res) => {
 
     try {
 
@@ -100,12 +100,13 @@ app.post("/color", (req, res) => {
         let promises = []
         localDevices.forEach(device => {
             let control = new Control(device.address, {
-                wait_for_reply: false
+                wait_for_reply: false,
+
             })
             promises.push(control.setColorWithBrightness(r, g, b, brightness))
         })
         
-        Promise.all(promises).then(() => res.status('200').send('Light command sent'))
+        Promise.all(promises).then(() => res.sendStatus('200'))
 
     } catch (e) {
         res.status(500).send(e)
@@ -114,11 +115,11 @@ app.post("/color", (req, res) => {
 
 });
 
-app.get("/devices", (req, res) => {
+app.get("/api/devices", (req, res) => {
     res.json(devices)
 })
 
-app.get("/device/:id", (req, res) => {
+app.get("/api/device/:id", (req, res) => {
 
     let id = req.params.id;
     if (typeof id === 'undefined') {
