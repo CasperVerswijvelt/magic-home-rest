@@ -2,6 +2,8 @@ const { Control, Discovery } = require('magic-home');
 const express = require("express");
 const bodyParser = require('body-parser');
 
+const PORT = process.env.PORT || 3000
+
 let devices = []
 
 function scanDevices() {
@@ -184,6 +186,6 @@ app.get("/api/device/:id", (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
