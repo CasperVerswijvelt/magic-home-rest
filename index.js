@@ -22,7 +22,7 @@ scanDevices();
 setInterval(scanDevices, 60000);
 
 const app = express();
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(function (err, req, res, next) {
     if (err) {
 
