@@ -10,10 +10,6 @@ Gets a list of magic-home devices on the network
 
 **Method** : `GET`
 
-**Auth required** : NO
-
-**Permissions required** : None
-
 ### Success Response
 
 **Code** : `200 OK`
@@ -37,10 +33,6 @@ Gets a the state of a magic-home device, by it's id
 **URL** : `/api/device/:id`
 
 **Method** : `GET`
-
-**Auth required** : NO
-
-**Permissions required** : None
 
 ### Success Response
 
@@ -70,10 +62,6 @@ Change the color of a magic-home device, by it's address or id.
 **URL** : `/api/color/`
 
 **Method** : `POST`
-
-**Auth required** : NO
-
-**Permissions required** : None
 
 **Data constraints**
 
