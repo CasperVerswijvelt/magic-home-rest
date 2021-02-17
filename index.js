@@ -115,6 +115,51 @@ app.post("/api/color", (req, res) => {
 
 });
 
+app.post("/api/power", (req, res) => {
+
+    try {
+
+        let id = req.body.id;
+        let address = req.body.address;
+        let power = req.body.power
+
+        if (typeof power === 'undefined') {
+            res.status('500').send('Power state must be defined');
+            return;
+        }
+
+        if (typeof power === 'boolean') {
+
+            let c = req.body.color
+            let r = Math.floor(c / (256 * 256));
+            let g = Math.floor(c / 256) % 256;
+            let b = c % 256;
+
+        } else {
+
+            res.status('500').send('Power value must be boolean');
+
+        }
+
+        let localDevices = devices.filter(device => (id === undefined || device.id === id) && (address === undefined || device.address === address))
+        let promises = []
+        localDevices.forEach(device => {
+            let control = new Control(device.address, {
+                wait_for_reply: false,
+
+            })
+            promises.push(control.setPower(power))
+        })
+
+        Promise.all(promises).then(() => res.sendStatus('200'))
+
+    } catch (e) {
+        res.status(500).send(e)
+        console.log(e)
+    }
+
+});
+
 app.get("/api/devices", (req, res) => {
     res.json(devices)
 })
