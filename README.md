@@ -76,7 +76,7 @@ If no id or address is provided, all lights on the network will receive this cha
 }
 ```
 
-**Data example** All fields must be sent.
+**Data example**
 
 ```json5 
 {
