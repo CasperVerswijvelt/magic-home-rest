@@ -201,6 +201,54 @@ app.post("/api/power", (req, res) => {
     }
 });
 
+//Test effects
+app.post("/api/effect", (req, res) => {
+	 try {
+
+        const id = req.body.id;
+        const address = req.body.address;
+        const effect = req.body.effect;
+		speed = req.body.speed;
+
+        if (typeof effect === 'undefined') {
+
+            res.status('500').send('Effect state must be defined');
+            return;
+        }
+		
+		if (typeof speed === 'undefined') {
+			speed = 100;
+		}
+		// Filter devices and loop over them to set power
+        const localDevices = devices.filter(device => (
+            (
+                id === undefined ||
+                device.id === id
+            ) &&
+            (
+                address === undefined ||
+                device.address === address
+            )
+        ));
+
+        const promises = [];
+
+        localDevices.forEach(device => {
+            const control = new Control(device.address, {
+                wait_for_reply: false,
+            })
+            promises.push(control.setPattern(effect, speed));
+        })
+
+        Promise.all(promises)
+            .then(() => res.sendStatus('200'))
+            .catch(err => res.status(500).send(err));
+	} catch (e) {
+
+        res.status(500).send(e);
+    }
+});
+
 // Devices endpoint
 app.get("/api/devices", (req, res) => {
     res.json(devices);
