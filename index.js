@@ -20,6 +20,18 @@ const scanDevices = () => {
     })
 }
 
+const getDevices = (id, address) => {
+    return devices.filter(device => (
+        (
+            id === undefined ||
+            device.id === id
+        ) &&
+        (
+            address === undefined ||
+            device.address === address)
+    ));
+}
+
 const hexToRgb = (hex) => {
 
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -54,7 +66,7 @@ app.use((err, req, res, next) => {
 
     if (err) {
 
-        res.status(500).send('Something went wrong!');
+        res.status(500).send(`Something went wrong! (${err})`);
 
     } else {
 
@@ -89,7 +101,7 @@ app.post("/api/color", (req, res) => {
         const address = req.body.address;
 
         if (typeof color === 'undefined') {
-            res.status('500').send('Color must be defined');
+            res.status('500').send(`'color' must be defined`);
             return;
         }
 
@@ -114,20 +126,12 @@ app.post("/api/color", (req, res) => {
 
         } else {
 
-            res.status('500').send('Color must be of type string (hex) or number (decimal)');
+            res.status('500').send(`'color' must be of type string (hex) or number (decimal)`);
             return;
         }
 
         // Filter devices and loop over them to set color
-        const localDevices = devices.filter(device => (
-            (
-                id === undefined ||
-                device.id === id
-            ) &&
-            (
-                address === undefined ||
-                device.address === address)
-        ));
+        const localDevices = getDevices(id, address)
 
         const promises = [];
 
@@ -140,7 +144,7 @@ app.post("/api/color", (req, res) => {
 
         Promise.all(promises)
             .then(() => res.sendStatus('200'))
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(500).send(err.message));
 
     } catch (e) {
 
@@ -158,29 +162,14 @@ app.post("/api/power", (req, res) => {
         const address = req.body.address;
         const power = req.body.power;
 
-        if (typeof power === 'undefined') {
-
-            res.status('500').send('Power state must be defined');
-            return;
-        }
-
         if (typeof power !== 'boolean') {
 
-            res.status('500').send('Power value must be boolean');
+            res.status('500').send(`'power' must be a boolean`);
             return;
         }
 
         // Filter devices and loop over them to set power
-        const localDevices = devices.filter(device => (
-            (
-                id === undefined ||
-                device.id === id
-            ) &&
-            (
-                address === undefined ||
-                device.address === address
-            )
-        ));
+        const localDevices = getDevices(id, address)
 
         const promises = [];
 
@@ -193,10 +182,51 @@ app.post("/api/power", (req, res) => {
 
         Promise.all(promises)
             .then(() => res.sendStatus('200'))
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(500).send(err.message));
 
     } catch (e) {
 
+        res.status(500).send(e);
+    }
+});
+
+//Test effects
+app.post("/api/effect", (req, res) => {
+    try {
+
+        const id = req.body.id;
+        const address = req.body.address;
+        const effect = req.body.effect;
+        speed = req.body.speed;
+
+        if (typeof effect !== 'string') {
+
+            res.status('500').send(`'effect' must be a string`);
+            return;
+        }
+
+        if (typeof speed !== 'number') {
+            speed = 100;
+        }
+
+        // Filter devices and loop over them to ativate effet
+        const localDevices = getDevices(id, address)
+
+        const promises = [];
+
+        localDevices.forEach(device => {
+            const control = new Control(device.address, {
+                wait_for_reply: false,
+            })
+            promises.push(control.setPattern(effect, speed));
+        })
+
+        Promise.all(promises)
+            .then(() => res.sendStatus('200'))
+            .catch(err => {
+                res.status(500).send(err.message)
+            });
+    } catch (e) {
         res.status(500).send(e);
     }
 });
@@ -213,7 +243,7 @@ app.get("/api/device/:id", (req, res) => {
 
     if (typeof id === 'undefined') {
 
-        res.status(500).send('Id must be defined!');
+        res.status(500).send(`'id' must be defined`);
         return;
     }
 
