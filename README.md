@@ -40,7 +40,7 @@ Gets a the state of a magic-home device, by it's id
 
 **Content example**
 
-```json5 
+```json5
 {
   "type": 51,
   "on": true,
@@ -67,7 +67,7 @@ Change the color of a magic-home device, by it's address or id.
 
 If no id or address is provided, all lights on the network will receive this change.
 
-```json5 
+```json5
 {
     "id": "id of magic-home device, string, optional",
     "address": "address of magic-home device, string, optional",
@@ -78,7 +78,7 @@ If no id or address is provided, all lights on the network will receive this cha
 
 **Data example**
 
-```json5 
+```json5
 {
     "id": "F4CFA2120867",
     "address": "192.168.69.198",
@@ -92,3 +92,80 @@ If no id or address is provided, all lights on the network will receive this cha
 **Condition** : Color commands were sent
 
 **Code** : `200 OK`
+
+## Turn on/off
+
+Change the power state of a magic-home device, by it's address or id.
+
+**URL** : `/api/power/`
+
+**Method** : `POST`
+
+**Data constraints**
+
+If no id or address is provided, all lights on the network will receive this change.
+
+```json5
+{
+    "id": "id of magic-home device, string, optional",
+    "address": "address of magic-home device, string, optional",
+    "power": "power state to set, required"
+}
+```
+
+**Data example**
+
+```json5
+{
+    "id": "F4CFA2120867",
+    "address": "192.168.69.198",
+    "power": false
+}
+```
+
+### Success Response
+
+**Condition** : Power commands were sent
+
+**Code** : `200 OK`
+
+## Activate an effect
+
+Activate an effect on a magic-home device, by it's address or id.
+
+**URL** : `/api/effect/`
+
+**Method** : `POST`
+
+**Data constraints**
+
+If no id or address is provided, all lights on the network will receive this change.
+
+See [this repository](https://github.com/jangxx/node-magichome#built-in-patterns) for a list of patterns.
+
+```json5
+{
+    "id": "id of magic-home device, string, optional",
+    "address": "address of magic-home device, string, optional",
+    "effect": "effect pattern to set, required",
+    "speed": "speed of the effect, number of 1 - 100, optional"
+}
+```
+
+**Data example**
+
+```json5
+{
+    "id": "F4CFA2120867",
+    "address": "192.168.69.198",
+    "effect": "seven_color_cross_fade",
+    "speed": 50
+}
+```
+
+### Success Response
+
+**Condition** : Effect commands were sent
+
+**Code** : `200 OK`
+
