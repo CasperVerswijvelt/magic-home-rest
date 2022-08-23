@@ -9,7 +9,7 @@ let devices = [];
 
 const scanDevices = () => {
     console.log('Scanning for devices ...');
-    Discovery.scan(1000).then(d => {
+    Discovery.scan(5000).then(d => {
         devices = d;
         const s = d.length == 1 ? "" : "s";
         console.log(`Found ${d.length} device${s}`)
