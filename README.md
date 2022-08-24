@@ -1,8 +1,27 @@
 
 # Magic-Home REST API
+
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/casperverswijvelt/magic-home-rest) ![Docker Pulls](https://img.shields.io/docker/pulls/casperverswijvelt/magic-home-rest)
+
 Simple REST API to control magic-home lights on the same network, built with [magic-home](https://github.com/jangxx/node-magichome) and [express](https://expressjs.com/).
 
-## Get devices
+## How to run
+
+### Via docker
+
+- Pull the latest version using  `docker pull casperverswijvelt/magic-home-rest:latest`
+- Run the image using `docker run --net=host --env PORT=3001 casperverswijvelt/magic-home-rest` (Customize port to your liking)
+
+### Manually
+
+- Clone this repository
+- Make sure NPM/Node is installed
+- Run `npm ci`
+- Run `npm start`
+
+## API
+
+### Get devices
 
 Gets a list of magic-home devices on the network
 
@@ -10,7 +29,7 @@ Gets a list of magic-home devices on the network
 
 **Method** : `GET`
 
-### Success Response
+#### Success Response
 
 **Code** : `200 OK`
 
@@ -26,7 +45,7 @@ Gets a list of magic-home devices on the network
 ]
 ```
 
-## Get device state
+### Get device state
 
 Gets a the state of a magic-home device, by it's id
 
@@ -34,7 +53,7 @@ Gets a the state of a magic-home device, by it's id
 
 **Method** : `GET`
 
-### Success Response
+#### Success Response
 
 **Code** : `200 OK`
 
@@ -55,7 +74,7 @@ Gets a the state of a magic-home device, by it's id
   "cold_white": 0
 }
 ```
-## Change color
+### Change color
 
 Change the color of a magic-home device, by it's address or id.
 
@@ -87,13 +106,13 @@ If no id or address is provided, all lights on the network will receive this cha
 }
 ```
 
-### Success Response
+#### Success Response
 
 **Condition** : Color commands were sent
 
 **Code** : `200 OK`
 
-## Turn on/off
+### Turn on/off
 
 Change the power state of a magic-home device, by it's address or id.
 
@@ -123,13 +142,13 @@ If no id or address is provided, all lights on the network will receive this cha
 }
 ```
 
-### Success Response
+#### Success Response
 
 **Condition** : Power commands were sent
 
 **Code** : `200 OK`
 
-## Activate an effect
+### Activate an effect
 
 Activate an effect on a magic-home device, by it's address or id.
 
