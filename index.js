@@ -7,9 +7,9 @@ let devices = [];
 
 // Functions
 
-const scanDevices = () => {
-    console.log('Scanning for devices ...');
-    Discovery.scan(5000).then(d => {
+const scanDevices = (timeout) => {
+    console.log(`Scanning for devices ... (${timeout}ms)`);
+    return Discovery.scan(timeout).then(d => {
         devices = d;
         const s = d.length == 1 ? "" : "s";
         console.log(`Found ${d.length} device${s}`)
@@ -49,10 +49,13 @@ const hexToRgb = (hex) => {
         : null;
 }
 
+const onScan = () => {
+    scanDevices(60000).then(onScan, onScan);
+}
+
 // Scan devices and set interval to scan every minute
 
-scanDevices();
-setInterval(scanDevices, 60000);
+scanDevices(5000).then(onScan, onScan);
 
 // Express
 
