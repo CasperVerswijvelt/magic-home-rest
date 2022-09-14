@@ -1,7 +1,7 @@
 
 # Magic-Home REST API
 
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/casperverswijvelt/magic-home-rest) ![Docker Pulls](https://img.shields.io/docker/pulls/casperverswijvelt/magic-home-rest)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/casperverswijvelt/magic-home-rest) ![Docker Pulls](https://img.shields.io/docker/pulls/casperverswijvelt/magic-home-rest) ![example workflow](https://github.com/CasperVerswijvelt/magic-home-rest/actions/workflows/build-docker.yml/badge.svg)
 
 Simple REST API to control magic-home lights on the same network, built with [magic-home](https://github.com/jangxx/node-magichome) and [express](https://expressjs.com/).
 
